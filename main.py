@@ -9,23 +9,20 @@ from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 from functools import wraps
 import flask_login
-import requests
 import smtplib
 import datetime
+import os
 from form import Comment_form
 
-my_email = "test.lap0021@gmail.com"
-password = "Fa$tD0e1*00"
-
-
-# Delete this code:
-# response = requests.get("https://api.npoint.io/5abcca6f4e39b4955965")
-# all_posts = response.json()
+# EMAIL_PASS == env
+my_email = os.getenv("EMAIL")
+password = os.getenv("EMAIL_PASS")
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
+
 
 # Connect to DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
@@ -341,13 +338,21 @@ def contact():
         email = contact_form['Email']
         phone = contact_form['phone_number']
         message = contact_form['msg']
-        with smtplib.SMTP("smtp.gmail.com", 587) as connection:
-            connection.starttls()
-            connection.login(user=my_email, password=password)
-            connection.sendmail(from_addr=my_email,
-                                to_addrs="python.test0021@yahoo.com",
-                                msg=f"Subject: New Message \n\nName: {name}\n Email: {email}\n Phone#:{phone}\n Message: {message}"
-                                )
+        try:
+            with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+                connection.starttls()
+                connection.login(user=my_email, password=password)
+                connection.sendmail(from_addr=my_email,
+                                    to_addrs="python.test0021@yahoo.com",
+                                    msg=f"Subject: New Message \n\nName: {name}\n Email: {email}\n Phone#:{phone}\n Message: {message}"
+                                    )
+
+        except smtplib.SMTPAuthenticationError:
+            flash("Bad Credentials")
+            return redirect(url_for("contact"))
+        except smtplib.SMTPResponseException:
+            flash("Bad Credentials")
+            return redirect(url_for("contact"))
 
         return render_template("contact.html")
     else:
