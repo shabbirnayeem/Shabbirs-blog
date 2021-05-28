@@ -1,4 +1,3 @@
-import login as login
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_gravatar import Gravatar
@@ -110,7 +109,8 @@ class Comment(db.Model):
     parent_post = db.relationship("BlogPost", back_populates='comments')
     text = db.Column(db.Text, nullable=False)
 
-db.create_all()
+# db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -139,7 +139,6 @@ def admin_only(func):
     return page_not_found
 
 
-
 # WTForm
 class CreatePostForm(FlaskForm):
     title = StringField("Blog Post Title", validators=[DataRequired()])
@@ -158,6 +157,7 @@ class RegisterForm(FlaskForm):
     name = StringField("Full Name", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
 
 # Login Form
 class LoginForm(FlaskForm):
@@ -185,14 +185,14 @@ def get_post(index):
 
         if request.method == "POST":
             if flask_login.current_user.is_authenticated:
-                    new_comment = Comment(
-                        author_id=flask_login.current_user.id,
-                        post_id=index,
-                        text=request.form.get("body"),
-                    )
-                    db.session.add(new_comment)
-                    db.session.commit()
-                    return redirect(url_for("get_post", index=index))
+                new_comment = Comment(
+                    author_id=flask_login.current_user.id,
+                    post_id=index,
+                    text=request.form.get("body"),
+                )
+                db.session.add(new_comment)
+                db.session.commit()
+                return redirect(url_for("get_post", index=index))
             else:
                 flash("You need to login or register to comment.")
                 return redirect(url_for("user_login"))
@@ -309,7 +309,7 @@ def user_login():
                 flash("The email does not exit or incorrect, please try again.")
                 return redirect(url_for("user_login"))
             elif user.user_pass != user_password:
-                flash ("The password is incorrect, please try again.")
+                flash("The password is incorrect, please try again.")
                 return redirect(url_for("user_login"))
 
     return render_template("login.html", form=form)
@@ -363,4 +363,3 @@ def contact():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
