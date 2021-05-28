@@ -1,0 +1,50 @@
+<!-- Header -->
+
+{% include 'header.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('static/img/login-background.png')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>LOG IN</h1>
+          <span class="subheading">Welcome back</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% block content %}
+ <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+          {# displaying the flash message #}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for meg in messages %}
+                        <p class="{{ category }}" style="color:red" > {{meg}} </p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+          <!-- This is where the form will go -->
+            <form method="post">
+<!--              creating form using wtf.quick_form-->
+<!--              button_map: A dictionary, mapping button field names to names such as primary, danger or success.-->
+              {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+            </form>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+<!-- Footer -->
+{% include 'footer.html' %}

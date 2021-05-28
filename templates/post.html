@@ -1,0 +1,99 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+<!-- Header -->
+{% include 'header.html' %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{post.img_url}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="post-heading">
+            <h1>{{post["title"]}}</h1>
+            <h2 class="subheading">{{post["subtitle"]}}</h2>
+            <span class="meta">Posted by
+              <a href="#">{{post.author.name}}</a>
+              on {{post.date}}</span>
+              
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <!--     safe() This makes sure that when Jinja renders the post.html template, it doesn't treat the HTML as text.-->
+                {{post["body"] | safe()}}
+                <hr>
+                {# edit post button will only show if the current user id == 1 #}
+                {% if current_user.id == 1: %}
+                    <div class="clearfix">
+                        <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
+                    </div>
+                {% endif %}
+
+
+                <!--            Comment Area -->
+
+                  <!-- This is where the form will go -->
+
+            <!--     creating form using wtf.quick_form-->
+            <!--     button_map: A dictionary, mapping button field names to names such as primary, danger or success.-->
+                {{ wtf.quick_form(comment_form, button_map={'submit':'primary'}) }}
+
+            <!--      CKEditor integration for Flask, add support to image upload, code syntax highlighting and more.-->
+                {{ckeditor.load()}}
+                {{ckeditor.config(name='body')}}
+
+
+                <!--      the comment can access two ways:-->
+                <!--      one: directly querying the comment table and accessing it with below code. This requires to pass the comment table in-->
+                <!--      Two: blog_post table already has access to all the comment via the comments property. This is result of DB relationship-->
+                <!--      {% for comment in all_comments: %}-->
+                <!--        <p>{{comment.text | safe()}}</p>-->
+                <!--      {% endfor %}-->
+
+                <!--      accessing the comments property of the blog_post table which is a list-->
+
+                    <div class="col-lg-8 col-md-10 mx-auto comment">
+                        {% for comment in post.comments %}
+                            <ul class="commentList">
+
+                                <li>
+                                    <div class="commenterImage">
+                                        <img src="{{ comment.comment_author.email | gravatar }}"/>
+                                    </div>
+                                    <di class="commentText">
+                                        {{comment.text | safe()}}
+                                        <span class="date sub-text">{{comment.comment_author.name}}</span>
+
+                                    </di>
+                                </li>
+
+                            </ul>
+                        {% endfor %}
+
+                    </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</article>
+
+
+  <hr>
+
+<!-- Footer -->
+{% include 'footer.html' %}
+{% endblock %}
+

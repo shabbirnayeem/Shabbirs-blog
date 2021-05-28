@@ -1,0 +1,72 @@
+<!-- The include tag is useful to include a template and return the rendered contents of that file into the current namespace: -->
+<!-- This is a jinja command that renders tempplates from other html file and includes where the command is. In this case
+its renderding the header code from header.html -->
+{% include 'header.html' %}
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('static/img/home-bg.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          {% if current_user.is_authenticated %}
+              <div class="site-heading">
+                  <h1>Welcome {{current_user.name}}</h1>
+                  <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              </div>
+          {% else: %}
+              <div class="site-heading">
+                  <h1>Welcome</h1>
+                  <span class="subheading">A Blog Theme by Start Bootstrap</span>
+              </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {% for post in posts: %}
+        <div class="post-preview">
+          <a href="{{ url_for('get_post', index=post['id'])}}">
+            <h2 class="post-title">
+              {{post["title"]}}
+            </h2>
+            <h3 class="post-subtitle">
+              {{post["subtitle"]}}
+            </h3>
+            
+          </a>
+          <p class="post-meta">Posted by
+            <a href="#">{{post.author.name}}</a>
+            {{post["date"]}}
+            {# user with ID 1 will admin, and admin can access delete post and create new post #}
+            {% if current_user.id == 1: %}
+              <a href="{{url_for('delete_post', post_id=post.id)}}">✘</a></p>
+            {% endif %}
+
+        </div>
+        
+        <hr>
+        {% endfor %}
+        
+
+        <!-- New Post -->
+        <div class="clearfix">
+          {# user with ID 1 will admin, and admin can access delete post and create new post #}
+          {% if current_user.id == 1: %}
+            <a class="btn btn-primary float-right" href="{{url_for('new_post')}}">Create New Post</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+<!-- Footer -->
+<!-- Redering the footer code from footer.html file using jinfa include command  -->
+{% include 'footer.html' %}

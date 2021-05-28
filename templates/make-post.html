@@ -1,0 +1,47 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/edit-bg.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+<!--              getting hold of the url using request.url-->
+<!--                  if url == to the new_post url then it will New Post h1, else edit post-->
+              {% if request.url == "http://127.0.0.1:5000/new-post": %}
+                <h1>New Post</h1>
+                <span class="subheading">You're going to make a great blog post!</span>
+              {% else %}
+                <h1>Edit Post</h1>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        
+          <!-- This is where the form will go -->
+            <form method="post">
+<!--              creating form using wtf.quick_form-->
+<!--              button_map: A dictionary, mapping button field names to names such as primary, danger or success.-->
+              {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+
+<!--        CKEditor integration for Flask, add support to image upload, code syntax highlighting and more.-->
+              {{ckeditor.load()}}
+              {{ckeditor.config(name='body')}}
+            </form>
+
+      </div>
+    </div>
+  </div>
+
+{% include "footer.html" %}
+{% endblock %}

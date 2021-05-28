@@ -1,0 +1,36 @@
+<!-- Header -->
+{% include 'header.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('static/img/join-background.jpg')">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="page-heading">
+          <h1>Create an account</h1>
+          <span class="subheading">Welcome, register to contribute.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+ <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+          <!-- This is where the form will go -->
+            <form method="post">
+<!--              creating form using wtf.quick_form-->
+<!--              button_map: A dictionary, mapping button field names to names such as primary, danger or success.-->
+              {{ wtf.quick_form(form, button_map={'submit':'primary'}) }}
+            </form>
+
+      </div>
+    </div>
+  </div>
+
+<!-- Footer -->
+{% include 'footer.html' %}

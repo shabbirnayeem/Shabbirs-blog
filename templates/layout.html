@@ -1,0 +1,11 @@
+{# displaying the flash message #}
+
+<body>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for meg in messages %}
+            <p class="{{ category }}"> {{meg}} </p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</body>
