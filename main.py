@@ -13,11 +13,12 @@ import datetime
 import os
 from form import Comment_form
 
-# EMAIL_PASS == env
+# ENV Variables
 my_email = os.getenv("EMAIL")
 password = os.getenv("EMAIL_PASS")
 to_email = os.getenv("EMAIL_TO")
 
+# Configuring Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
