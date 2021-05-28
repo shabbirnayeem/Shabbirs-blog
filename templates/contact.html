@@ -29,6 +29,16 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
+<!--      To display the flash messages-->
+      {# displaying the flash message #}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for meg in messages %}
+                        <p class="{{ category }}" style="color:red" > {{meg}} </p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
       <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as
         possible!</p>
       <!-- Contact Form - Enter your email address on line 19 of the mail/contact_me.php file to make this form work. -->
