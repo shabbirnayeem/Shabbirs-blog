@@ -17,6 +17,7 @@ from form import Comment_form
 # EMAIL_PASS == env
 my_email = os.getenv("EMAIL")
 password = os.getenv("EMAIL_PASS")
+to_email = os.getenv("EMAIL_TO")
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -193,7 +194,7 @@ def get_post(index):
                     db.session.commit()
                     return redirect(url_for("get_post", index=index))
             else:
-                flash("You to login or register to comment.")
+                flash("You need to login or register to comment.")
                 return redirect(url_for("user_login"))
 
     return render_template("post.html", post=requested_post, comment_form=Comment_form())
@@ -343,7 +344,7 @@ def contact():
                 connection.starttls()
                 connection.login(user=my_email, password=password)
                 connection.sendmail(from_addr=my_email,
-                                    to_addrs="python.test0021@yahoo.com",
+                                    to_addrs=to_email,
                                     msg=f"Subject: New Message \n\nName: {name}\n Email: {email}\n Phone#:{phone}\n Message: {message}"
                                     )
 
