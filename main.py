@@ -26,13 +26,13 @@ Bootstrap(app)
 
 
 # Connect to DB
-
-if os.getenv("DATABASE_URL"):
-    # Connecting to PostgreSQL Heroku DB
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
-else:
-    # Local Database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
+# if os.getenv("DATABASE_URL") == None:
+#
+#     # Local Database
+#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
+# else:
+# Connecting to PostgreSQL Heroku DB
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
