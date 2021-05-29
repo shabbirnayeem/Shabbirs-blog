@@ -26,14 +26,9 @@ Bootstrap(app)
 
 
 # Connect to DB
-# if os.getenv("DATABASE_URL") == None:
-#
-#     # Local Database
-#     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
-# else:
 # Connecting to PostgreSQL Heroku DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
-
+# If DATABASE_URL is not available it will use the local DB
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///BlogDB.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -177,7 +172,6 @@ class LoginForm(FlaskForm):
 @app.route('/')
 def home():
     blog_posts = db.session.query(BlogPost).all()
-    # print(flask_login.current_user.id)
     return render_template("index.html", posts=blog_posts)
 
 
