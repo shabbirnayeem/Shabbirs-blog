@@ -28,7 +28,7 @@ Bootstrap(app)
 # Connect to DB
 # Connecting to PostgreSQL Heroku DB
 # If DATABASE_URL is not available it will use the local DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///BlogDB.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL",  "sqlite:///BlogDB.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
