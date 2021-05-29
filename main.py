@@ -19,8 +19,9 @@ password = os.getenv("EMAIL_PASS")
 to_email = os.getenv("EMAIL_TO")
 
 # Configuring Flask
+SECRET_KEY = os.getenv("SECRET_KEY")
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['SECRET_KEY'] = SECRET_KEY
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
@@ -362,8 +363,8 @@ def contact():
         return render_template("contact.html")
 
 
-port = int(os.getenv('POST', 5000))
+# port = int(os.getenv('POST', 5000))
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
+    # app.run(host='0.0.0.0', port=port)
