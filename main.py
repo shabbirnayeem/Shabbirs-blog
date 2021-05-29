@@ -19,15 +19,21 @@ password = os.getenv("EMAIL_PASS")
 to_email = os.getenv("EMAIL_TO")
 
 # Configuring Flask
-SECRET_KEY = os.getenv("SECRET_KEY")
 app = Flask(__name__)
-app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
+
+if os.getenv("DATABASE_URL"):
+    # Connecting to PostgreSQL Heroku DB
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+else:
+    # Local Database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BlogDB.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
