@@ -113,6 +113,7 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
 
 # db.create_all()
+# note to uncomment this when you deploy apps to heroku for the first one
 
 
 @login_manager.user_loader
