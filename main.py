@@ -26,11 +26,9 @@ Bootstrap(app)
 
 
 # Connect to DB
-# Local DB
-# "sqlite:///BlogDB.db"
 # Connecting to PostgreSQL Heroku DB
 # If DATABASE_URL is not available it will use the local DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite:///BlogDB.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -114,7 +112,7 @@ class Comment(db.Model):
     parent_post = db.relationship("BlogPost", back_populates='comments')
     text = db.Column(db.Text, nullable=False)
 
-db.create_all()
+# db.create_all()
 
 
 @login_manager.user_loader
